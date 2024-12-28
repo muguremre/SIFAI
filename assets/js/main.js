@@ -85,17 +85,21 @@ const scrollActive = () => {
   const scrollDown = window.scrollY;
 
   sections.forEach((current) => {
-    const sectionHeight = current.offsetHeight,
-      sectionTop = current.offsetTop - 58,
-      sectionId = current.getAttribute('id'),
-      sectionsClass = document.querySelector(
-        '.nav__menu a[href*=' + sectionId + ']'
-      );
+    const sectionHeight = current.offsetHeight;
+    const sectionTop = current.offsetTop - 58;
+    const sectionId = current.getAttribute('id');
+    const sectionsClass = document.querySelector(
+      '.nav__menu a[href*=' + sectionId + ']'
+    );
 
-    if (scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight) {
-      sectionsClass.classList.add('active-link');
+    if (sectionsClass) {
+      if (scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight) {
+        sectionsClass.classList.add('active-link');
+      } else {
+        sectionsClass.classList.remove('active-link');
+      }
     } else {
-      sectionsClass.classList.remove('active-link');
+      console.warn(`Debug: No element found for sectionId: ${sectionId}`);
     }
   });
 };
@@ -156,20 +160,38 @@ imageUpload.addEventListener('change', () => {
     reader.readAsDataURL(file);
   }
 });
-
 // Form Submit İşlemi
 uploadForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const file = imageUpload.files[0];
+  const userId = localStorage.getItem('userId'); // Login sonrası userId'yi kontrol ediyoruz
+
+  console.log('Debug: Selected file:', file);
+  console.log('Debug: User ID from localStorage:', userId);
+
+  if (!userId) {
+    console.error('Debug: No userId in localStorage. Redirect to login.');
+    modalMessage.innerText = 'User is not logged in.';
+    popupModal.classList.remove('hidden');
+    return;
+  }
+
   if (!file) {
+    console.error('Debug: No file selected.');
     modalMessage.innerText = 'Please select an image file.';
-    popupModal.classList.remove('hidden'); // Modalı göster
+    popupModal.classList.remove('hidden');
     return;
   }
 
   const formData = new FormData();
   formData.append('Image', file);
+  formData.append('UserId', userId);
+
+  console.log('Debug: FormData Content:');
+  for (let pair of formData.entries()) {
+    console.log(`  ${pair[0]}: ${pair[1]}`);
+  }
 
   try {
     const response = await fetch('https://localhost:7100/api/Tumor/detect', {
@@ -177,19 +199,86 @@ uploadForm.addEventListener('submit', async (e) => {
       body: formData
     });
 
+    console.log('Debug: API Response Status:', response.status);
+
     if (response.ok) {
       const result = await response.json();
-      modalMessage.innerText = `Tumor Type Detected: ${result.tumor_type}`;
-      popupModal.classList.remove('hidden'); // Modalı göster
+      console.log('Debug: API Response Body:', result);
+      modalMessage.innerText = `Tumor Type Detected: ${result.tumorType}`;
+      popupModal.classList.remove('hidden');
+      await refreshHistory();
     } else {
-      modalMessage.innerText = 'Error: Could not process the image.';
-      popupModal.classList.remove('hidden'); // Modalı göster
+      const errorData = await response.json();
+      console.error('Debug: Error Response Body:', errorData);
+      modalMessage.innerText = `Error: ${
+        errorData.message || 'Could not process the image.'
+      }`;
+      popupModal.classList.remove('hidden');
     }
   } catch (error) {
+    console.error('Debug: Network Error:', error);
     modalMessage.innerText = 'Network Error: Could not connect to the server.';
-    popupModal.classList.remove('hidden'); // Modalı göster
+    popupModal.classList.remove('hidden');
   }
 });
+
+// Kullanıcının geçmiş sonuçlarını yenilemek için fonksiyon
+async function refreshHistory() {
+  const userId = localStorage.getItem('userId'); // Kullanıcının ID'sini kontrol et
+  console.log('Debug: Refresh history for userId:', userId);
+
+  const historyContainer = document.getElementById('history-container');
+  if (!userId) {
+    console.error('Debug: No userId found. Cannot refresh history.');
+    historyContainer.innerHTML = `<p>User is not logged in. Please log in to view history.</p>`;
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://localhost:7100/api/Tumor/history/${userId}`
+    );
+    console.log('Debug: History API Response Status:', response.status);
+
+    if (response.ok) {
+      const results = await response.json();
+      console.log('Debug: History Results:', results);
+      displayHistory(results, historyContainer);
+    } else {
+      console.error('Debug: Error fetching history. Status:', response.status);
+      historyContainer.innerHTML = `<p>Error fetching history. Please try again later.</p>`;
+    }
+  } catch (error) {
+    console.error('Debug: Network error while fetching history:', error);
+    historyContainer.innerHTML = `<p>Network error. Please try again later.</p>`;
+  }
+}
+
+// Gelen sonuçları göster
+function displayHistory(results, container) {
+  if (!results.$values || results.$values.length === 0) {
+    container.innerHTML = `<p>No results found.</p>`;
+    return;
+  }
+
+  const historyHtml = results.$values
+    .map(
+      (result) => `
+    <div class="history__card">
+      <img class="history__image" src="https://localhost:7100/uploads/${
+        result.imageUrl
+      }" alt="${result.tumorType}">
+      <h3 class="history__title">Tumor Type: ${result.tumorType}</h3>
+      <p class="history__date">Detection Date: ${new Date(
+        result.detectionDate
+      ).toLocaleDateString()}</p>
+    </div>
+  `
+    )
+    .join('');
+
+  container.innerHTML = historyHtml;
+}
 
 // Modal Elementleri
 const popupModal = document.getElementById('popupModal');
@@ -199,4 +288,30 @@ const closeModal = document.getElementById('closeModal');
 // Modalı kapatma işlemi
 closeModal.addEventListener('click', () => {
   popupModal.classList.add('hidden'); // Modalı gizle
+});
+// Çıkış Yapma İşlevi
+const logoutButton = document.getElementById('logoutButton');
+
+logoutButton.addEventListener('click', () => {
+  console.log('Debug: Logging out user...');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('token');
+  console.log('Debug: userId and token removed from localStorage.');
+  window.location.href = 'login.html';
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const userId = localStorage.getItem('userId'); // Kullanıcı kimliği
+  console.log('Debug: Loaded userId:', userId);
+
+  if (!userId) {
+    console.error(
+      'Debug: No userId found in localStorage. Redirecting to login.'
+    );
+    window.location.href = 'login.html';
+  } else {
+    // Eğer kullanıcı giriş yapmışsa geçmiş sorguları yükle
+    console.log('Debug: Refreshing history on page load...');
+    await refreshHistory();
+  }
 });

@@ -214,16 +214,16 @@ svg {
 .nav__link[href='#projects'] {
   display: inline-block;
   padding: 8px 16px;
-  border: 2px solid var(--first-color); /* Kenar rengi */
+  border: 2px solid var(--first-color);
   border-radius: 8px;
-  color: var(--first-color); /* Yazı rengi */
-  text-decoration: none; /* Alt çizgiyi kaldırır */
-  transition: all 0.3s ease; /* Geçiş animasyonu */
+  color: var(--first-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .nav__link[href='#projects']:hover {
-  background-color: var(--first-color); /* Hover durumunda arka plan rengi */
-  color: #fff; /* Hover durumunda yazı rengi */
+  background-color: var(--first-color);
+  color: #fff;
 }
 .nav__close {
   position: absolute;
@@ -392,12 +392,9 @@ svg {
 
 .skills__content {
   grid-template-columns: repeat(3, max-content);
-  /* Responsive grid */
   column-gap: 4rem;
-  /* Responsive gap */
   justify-content: center;
   align-items: baseline;
-  /* Updated alignment */
 }
 
 .skills__group {
@@ -424,9 +421,9 @@ svg {
 
 .services__container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 sütun oluştur */
-  gap: 2rem; /* Kartlar arası boşluk */
-  padding: 1rem; /* Genel iç boşluk */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 1rem;
 }
 
 .services__card {
@@ -439,19 +436,19 @@ svg {
 }
 
 .services__card:nth-child(1) {
-  order: 1; /* Muhammed üstte */
+  order: 1;
 }
 
 .services__card:nth-child(2) {
-  order: 2; /* Selen üstte */
+  order: 2;
 }
 
 .services__card:nth-child(3) {
-  order: 3; /* Enes altta */
+  order: 3;
 }
 
 .services__card:nth-child(4) {
-  order: 4; /* Ömer altta */
+  order: 4;
 }
 
 .services__card:hover {
@@ -463,12 +460,12 @@ svg {
 }
 
 .services__image {
-  width: 300px; /* Fotoğrafın genişliği */
-  height: 300px; /* Fotoğrafın yüksekliği */
-  border-radius: 50%; /* Yuvarlak hale getirmek için */
-  object-fit: cover; /* Görselin taşmasını önlemek için */
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
   margin-bottom: 1rem;
-  border: 3px solid var(--first-color); /* Çerçeve rengi */
+  border: 3px solid var(--first-color);
 }
 
 .services__title {
@@ -530,14 +527,14 @@ svg {
 .projects__preview {
   width: 300px;
   height: 300px;
-  border: 2px dashed var(--first-color); /* Kesikli çizgi */
+  border: 2px dashed var(--first-color);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  background-color: var(--container-color); /* Arka plan rengi */
+  background-color: var(--container-color);
 }
 
 .projects__preview p {
@@ -551,7 +548,7 @@ svg {
   max-height: 100%;
   object-fit: contain;
   position: absolute;
-  border-radius: 4px; /* Fotoğraf köşelerini yuvarlat */
+  border-radius: 4px;
 }
 
 .hidden {
@@ -567,7 +564,7 @@ svg {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.4); /* Arka planın kararması */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -603,6 +600,50 @@ svg {
 
 .hidden {
   display: none;
+}
+
+/* History Section Styles */
+.history__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
+
+.history__card {
+  background-color: var(--container-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.history__image {
+  width: 100%;
+  height: 200px;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.history__title {
+  font-size: var(--h3-font-size);
+  color: var(--title-color);
+  font-weight: var(--font-medium);
+}
+
+.history__date {
+  font-size: var(--small-font-size);
+  color: var(--text-color);
+  margin-top: 0.5rem;
 }
 
 /*=============== CONTACT ===============*/
@@ -650,6 +691,32 @@ svg {
   font-size: var(--small-font-size);
   color: var(--title-color);
 }
+/*=============== LOGOUT ===============*/
+.logout-button {
+  background: var(--first-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: var(--h3-font-size);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:hover {
+  background: #ff6b6b;
+  color: #fff;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 /*=============== FOOTER ===============*/
 
 .footer {

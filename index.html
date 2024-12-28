@@ -45,6 +45,11 @@
             <li class="nav__item">
               <a href="#contact" class="nav__link">Contact</a>
             </li>
+            <li class="nav__item">
+              <button id="logoutButton" class="nav__link logout-button">
+                Logout
+              </button>
+            </li>
           </ul>
           <!--Close Button-->
           <div class="nav__close" id="nav-close">
@@ -288,7 +293,7 @@
               alt="Enes Özsarı"
               class="services__image"
             />
-            <h2 class="services__title">Enes Özsarı</h2>
+            <h2 class="services__title">İbrahim Enes Özsarı</h2>
           </article>
           <!-- Ömer -->
           <article class="services__card">
@@ -310,7 +315,6 @@
           <p id="modalMessage" class="modal-message"></p>
         </div>
       </div>
-
       <section class="projects section" id="projects">
         <h3 class="section__subtitle">Upload <span>Image</span></h3>
         <h2 class="section__title">Select an Image to Upload</h2>
@@ -333,7 +337,14 @@
           <p id="responseMessage"></p>
         </div>
       </section>
-
+      <!--==================== HISTORY SECTION ====================-->
+      <section class="history section" id="history">
+        <h3 class="section__subtitle">Your <span>History</span></h3>
+        <h2 class="section__title">Tumor Detection Results</h2>
+        <div class="history__container container grid" id="history-container">
+          <!-- Tumor results will be dynamically added here -->
+        </div>
+      </section>
       <!--==================== CONTACT ====================-->
       <section class="contact section" id="contact">
         <h3 class="section__subtitle">Get In <span>Touch</span></h3>
