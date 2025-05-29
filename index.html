@@ -27,7 +27,9 @@
     <!--==================== HEADER ====================-->
     <header class="header" id="header">
       <nav class="nav container">
-        <a href="#" class="nav__logo"> ŞİF <span>AI</span> <i class="version__number">2.1</i> </a>
+        <a href="#" class="nav__logo">
+          ŞİF <span>AI</span> <i class="version__number">2.1</i>
+        </a>
         <div class="nav__menu" id="nav-menu">
           <ul class="nav__list">
             <li class="nav__item">
@@ -66,78 +68,93 @@
     <!--==================== MAIN ====================-->
     <main class="main">
       <!--==================== HOME ====================-->
-        <section class="home section" id="home">
+      <section class="home section" id="home">
+        <video autoplay muted loop playsinline class="background-video">
+          <source src="assets/videos/colors.mp4" type="video/mp4" />
+        </video>
+        <div class="home__container container grid">
+          <div class="home__content">
+            <div class="home__data">
+              <h3 class="home__subtittle">
+                Detect Brain Tumor at Early Stage!
+              </h3>
+              <h1 class="home__tittle">
+                Upload Your MRI Images and Protect Your Health with the Power of
+                Şifai!
+              </h1>
 
-            <video autoplay muted loop playsinline class="background-video">
-                <source src="assets/videos/colors.mp4" type="video/mp4" />
-            </video>
-            <div class="home__container container grid">
-                <div class="home__content">
-                    <div class="home__data">
-                        <h3 class="home__subtittle">
-                            Detect Brain Tumor at Early Stage!
-                        </h3>
-                        <h1 class="home__tittle">
-                            Upload Your MRI Images and Protect Your Health with the Power of
-                            Şifai!
-                        </h1>
+              <h3 class="home__education">Try Now</h3>
 
-                        <h3 class="home__education">Try Now</h3>
-
-                        <a href="#contact" class="button">MR Review</a>
-                    </div>
-                </div>
-                <div class="home__image">
-                    <svg class="home__blob"
-                         viewBox="0 0 550 591"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <mask id="maskBlob" mask-type="alpha">
-                            <path d="M263 47.1782C270.426 42.891 279.574 42.891 287 47.1782L501.157
-                        170.822C508.583 175.109 513.157 183.032 513.157 191.606V438.894C513.157
-                        447.468 508.583 455.391 501.157 459.678L287 583.322C279.574 587.609 270.426
-                        587.609 263 583.322L48.843 459.678C41.4174 455.391 36.843 447.468 36.843
-                        438.894V191.606C36.843 183.032 41.4174 175.109 48.843 170.822L263 47.1782Z" />
-                        </mask>
-                        <g mask="url(#maskBlob)">
-                            <path d="M263 47.1782C270.426 42.891 279.574 42.891 287 47.1782L501.157
-                        170.822C508.583 175.109 513.157 183.032 513.157 191.606V438.894C513.157
-                        447.468 508.583 455.391 501.157 459.678L287 583.322C279.574 587.609 270.426
-                        587.609 263 583.322L48.843 459.678C41.4174 455.391 36.843 447.468 36.843
-                        438.894V191.606C36.843 183.032 41.4174 175.109 48.843 170.822L263 47.1782Z" />
-
-                            <rect x="37" width="476" height="630" fill="url(#pattern0)" />
-                        </g>
-
-                        <rect x="37" width="476" height="300" fill="url(#pattern1)" />
-
-                        <defs>
-                            <pattern id="pattern0"
-                                     patternContentUnits="objectBoundingBox"
-                                     width="1"
-                                     height="1">
-                                <use href="#imageBlob"
-                                     transform="matrix(0.00143057 0 0 0.00108108 0.0404062 0)" />
-                            </pattern>
-
-                            <pattern id="pattern1"
-                                     patternContentUnits="objectBoundingBox"
-                                     width="1"
-                                     height="1">
-                                <use href="#imageBlob"
-                                     transform="matrix(0.00143057 0 0 0.00226984 0.0404062 0)" />
-                            </pattern>
-
-                            <!-- Insert your profile (recommended size: 640 x 940) -->
-                            <image class="home__img"
-                                   id="imageBlob"
-                                   width="640"
-                                   height="925"
-                                   href="assets/img/BrainTumor.jpg" />
-                        </defs>
-                    </svg>
-                </div>
+              <a href="#contact" class="button">MR Review</a>
             </div>
-        </section>
+          </div>
+          <div class="home__image">
+            <svg
+              class="home__blob"
+              viewBox="0 0 550 591"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <mask id="maskBlob" mask-type="alpha">
+                <path
+                  d="M263 47.1782C270.426 42.891 279.574 42.891 287 47.1782L501.157
+                        170.822C508.583 175.109 513.157 183.032 513.157 191.606V438.894C513.157
+                        447.468 508.583 455.391 501.157 459.678L287 583.322C279.574 587.609 270.426
+                        587.609 263 583.322L48.843 459.678C41.4174 455.391 36.843 447.468 36.843
+                        438.894V191.606C36.843 183.032 41.4174 175.109 48.843 170.822L263 47.1782Z"
+                />
+              </mask>
+              <g mask="url(#maskBlob)">
+                <path
+                  d="M263 47.1782C270.426 42.891 279.574 42.891 287 47.1782L501.157
+                        170.822C508.583 175.109 513.157 183.032 513.157 191.606V438.894C513.157
+                        447.468 508.583 455.391 501.157 459.678L287 583.322C279.574 587.609 270.426
+                        587.609 263 583.322L48.843 459.678C41.4174 455.391 36.843 447.468 36.843
+                        438.894V191.606C36.843 183.032 41.4174 175.109 48.843 170.822L263 47.1782Z"
+                />
+
+                <rect x="37" width="476" height="630" fill="url(#pattern0)" />
+              </g>
+
+              <rect x="37" width="476" height="300" fill="url(#pattern1)" />
+
+              <defs>
+                <pattern
+                  id="pattern0"
+                  patternContentUnits="objectBoundingBox"
+                  width="1"
+                  height="1"
+                >
+                  <use
+                    href="#imageBlob"
+                    transform="matrix(0.00143057 0 0 0.00108108 0.0404062 0)"
+                  />
+                </pattern>
+
+                <pattern
+                  id="pattern1"
+                  patternContentUnits="objectBoundingBox"
+                  width="1"
+                  height="1"
+                >
+                  <use
+                    href="#imageBlob"
+                    transform="matrix(0.00143057 0 0 0.00226984 0.0404062 0)"
+                  />
+                </pattern>
+
+                <!-- Insert your profile (recommended size: 640 x 940) -->
+                <image
+                  class="home__img"
+                  id="imageBlob"
+                  width="640"
+                  height="925"
+                  href="assets/img/BrainTumor.jpg"
+                />
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </section>
 
       <!--==================== ABOUT ====================-->
       <section class="about section" id="about">
@@ -233,10 +250,9 @@
 
       <!--==================== SKILLS ====================-->
       <section class="skills section">
-        
-            <video autoplay muted loop playsinline class="background-video">
-                <source src="assets/videos/ink.mp4" type="video/mp4" />
-            </video>
+        <video autoplay muted loop playsinline class="background-video">
+          <source src="assets/videos/ink.mp4" type="video/mp4" />
+        </video>
         <div class="skills__container container grid">
           <div class="skills__data">
             <h3 class="section__subtitle">How to use <span>ŞİFAI</span></h3>
@@ -256,85 +272,145 @@
       </section>
 
       <!--==================== TEAM ====================-->
-     <section class="team section" id="team">
-  <h3 class="section__subtitle">Our <span>Team</span></h3>
+      <section class="team section" id="team">
+        <h3 class="section__subtitle">Our <span>Team</span></h3>
 
-  <div class="team__wrapper">
+        <div class="team__wrapper">
+          <div class="team__container" id="teamSlider">
+            <!-- Muhammed -->
+            <article class="team__card">
+              <img src="assets/img/muguremre.jpg" alt="Muhammed Uğur Emre" />
+              <h2>Muhammed Uğur Emre</h2>
+            </article>
 
-    <div class="team__container" id="teamSlider">
-      <!-- Muhammed -->
-      <article class="team__card">
-        <img src="assets/img/muguremre.jpg" alt="Muhammed Uğur Emre" />
-        <h2>Muhammed Uğur Emre</h2>
-      </article>
+            <!-- Selen -->
+            <article class="team__card">
+              <img src="assets/img/selen.jpg" alt="Selen Sarı" />
+              <h2>Selen Sarı</h2>
+            </article>
 
-      <!-- Selen -->
-      <article class="team__card">
-        <img src="assets/img/selen.jpg" alt="Selen Sarı" />
-        <h2>Selen Sarı</h2>
-      </article>
+            <!-- Enes -->
+            <article class="team__card">
+              <img src="assets/img/enes.jpg" alt="Enes Özsarı" />
+              <h2>İbrahim Enes Özsarı</h2>
+            </article>
 
-      <!-- Enes -->
-      <article class="team__card">
-        <img src="assets/img/enes.jpg" alt="Enes Özsarı" />
-        <h2>İbrahim Enes Özsarı</h2>
-      </article>
-
-      <!-- Ömer -->
-      <article class="team__card">
-        <img src="assets/img/omer.jpg" alt="Ömer Berat Yıldırım" />
-        <h2>Ömer Berat Yıldırım</h2>
-      </article>
-       <!-- Ömer -->
-      <article class="team__card">
-        <img src="assets/img/omer.jpg" alt="Cemre Dağ" />
-        <h2>Cemre Dağ</h2>
-      </article>
-    </div>
-
-  </div>
-</section>
-
-<section>
-      <!--==================== PROJECTS ====================-->
-      <!-- Modal -->
-      <div id="popupModal" class="modal hidden">
-        <div class="modal-content">
-          <span id="closeModal" class="close-button">&times;</span>
-          <p id="modalMessage" class="modal-message"></p>
-        </div>
-      </div>
-      <section class="projects section" id="projects">
-        <h3 class="section__subtitle">Upload <span>Image</span></h3>
-        <h2 class="section__title">Select an Image to Upload</h2>
-        <div class="projects__container container">
-          <form class="projects__form" id="uploadForm">
-            <label for="imageUpload" class="projects__label">Choose File</label>
-            <input
-              type="file"
-              id="imageUpload"
-              class="projects__input"
-              accept="image/*"
-              required
-            />
-            <div class="projects__preview">
-              <p id="previewText">Preview will appear here...</p>
-              <img id="previewImage" src="#" alt="Preview" class="hidden" />
-            </div>
-            <button type="submit" class="projects__button">Upload</button>
-          </form>
-          <p id="responseMessage"></p>
-        </div>
-      </section>
-      <!--==================== HISTORY SECTION ====================-->
-      <section class="history section" id="history">
-        <h3 class="section__subtitle">Your <span>History</span></h3>
-        <h2 class="section__title">Tumor Detection Results</h2>
-        <div class="history__container container grid" id="history-container">
-          <!-- Tumor results will be dynamically added here -->
+            <!-- Ömer -->
+            <article class="team__card">
+              <img src="assets/img/omer.jpg" alt="Ömer Berat Yıldırım" />
+              <h2>Ömer Berat Yıldırım</h2>
+            </article>
+            <!-- Ömer -->
+            <article class="team__card">
+              <img src="assets/img/omer.jpg" alt="Cemre Dağ" />
+              <h2>Cemre Dağ</h2>
+            </article>
+          </div>
         </div>
       </section>
 
+      <section>
+        <!--==================== PROJECTS ====================-->
+        <!-- Modal -->
+        <div id="anamnezModal" class="modal hidden">
+          <div class="modal-content">
+            <p id="anamnezQuestion" class="modal-message"></p>
+            <div id="anamnezOptions"></div>
+            <button id="nextAnamnezButton" class="projects__button">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div id="popupModal" class="modal hidden">
+          <div class="modal-content">
+            <span id="closeModal" class="close-button">&times;</span>
+            <p id="modalMessage" class="modal-message"></p>
+          </div>
+        </div>
+        <section class="projects section" id="projects">
+          <h3 class="section__subtitle">Upload <span>Image</span></h3>
+          <h2 class="section__title">Select an Image to Upload</h2>
+          <div class="projects__container container">
+            <form class="projects__form" id="uploadForm">
+              <div id="anamnezForm" class="anamnez__form hidden">
+                <label
+                  >Gender:
+                  <select id="gender" required>
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </label>
+
+                <label
+                  >Age:
+                  <input type="number" id="age" min="0" required />
+                </label>
+
+                <label
+                  >Epilepsy:
+                  <input type="checkbox" id="epilepsy" />
+                </label>
+
+                <label
+                  >Morning Headache:
+                  <input type="checkbox" id="morningHeadache" />
+                </label>
+
+                <label
+                  >Worsening Headache:
+                  <input type="checkbox" id="worseningHeadache" />
+                </label>
+
+                <label
+                  >Vision Loss:
+                  <input type="checkbox" id="visionLoss" />
+                </label>
+
+                <label
+                  >Hormonal Issues:
+                  <input type="checkbox" id="hormonalIssues" />
+                </label>
+
+                <label
+                  >Family History:
+                  <input type="checkbox" id="familyHistory" />
+                </label>
+              </div>
+
+              <label class="projects__label" id="customChooseFile">
+                Choose File
+              </label>
+
+              <input
+                type="file"
+                id="imageUpload"
+                class="projects__input"
+                accept="image/*"
+                required
+                disabled
+              />
+
+              <div class="projects__preview">
+                <p id="previewText">Preview will appear here...</p>
+                <img id="previewImage" src="#" alt="Preview" class="hidden" />
+              </div>
+
+              <button type="submit" class="projects__button">Upload</button>
+            </form>
+
+            <p id="responseMessage"></p>
+          </div>
+        </section>
+        <!--==================== HISTORY SECTION ====================-->
+        <section class="history section" id="history">
+          <h3 class="section__subtitle">Your <span>History</span></h3>
+          <h2 class="section__title">Tumor Detection Results</h2>
+          <div class="history__container container grid" id="history-container">
+            <!-- Tumor results will be dynamically added here -->
+          </div>
+        </section>
       </section>
       <!--==================== CONTACT ====================-->
       <section class="contact section" id="contact">
@@ -400,6 +476,5 @@
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
-    
   </body>
 </html>

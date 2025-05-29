@@ -17,8 +17,6 @@ if (navClose) {
   });
 }
 
-
-
 /*=============== REMOVE MENU MOBILE ===============*/
 const navLink = document.querySelectorAll('.nav__link');
 
@@ -168,20 +166,15 @@ uploadForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const file = imageUpload.files[0];
-  const userId = localStorage.getItem('userId'); // Login sonrası userId'yi kontrol ediyoruz
-
-  console.log('Debug: Selected file:', file);
-  console.log('Debug: User ID from localStorage:', userId);
+  const userId = localStorage.getItem('userId');
 
   if (!userId) {
-    console.error('Debug: No userId in localStorage. Redirect to login.');
     modalMessage.innerText = 'User is not logged in.';
     popupModal.classList.remove('hidden');
     return;
   }
 
   if (!file) {
-    console.error('Debug: No file selected.');
     modalMessage.innerText = 'Please select an image file.';
     popupModal.classList.remove('hidden');
     return;
@@ -191,10 +184,27 @@ uploadForm.addEventListener('submit', async (e) => {
   formData.append('Image', file);
   formData.append('UserId', userId);
 
-  console.log('Debug: FormData Content:');
-  for (let pair of formData.entries()) {
-    console.log(`  ${pair[0]}: ${pair[1]}`);
-  }
+  // ✅ Anamnez verilerini formData’ya ekle
+  formData.append('Gender', document.getElementById('gender').value);
+  formData.append('Age', document.getElementById('age').value);
+  formData.append('Epilepsy', document.getElementById('epilepsy').checked);
+  formData.append(
+    'MorningHeadache',
+    document.getElementById('morningHeadache').checked
+  );
+  formData.append(
+    'WorseningHeadache',
+    document.getElementById('worseningHeadache').checked
+  );
+  formData.append('VisionLoss', document.getElementById('visionLoss').checked);
+  formData.append(
+    'HormonalIssues',
+    document.getElementById('hormonalIssues').checked
+  );
+  formData.append(
+    'FamilyHistory',
+    document.getElementById('familyHistory').checked
+  );
 
   try {
     const response = await fetch('https://localhost:7100/api/Tumor/detect', {
@@ -202,24 +212,35 @@ uploadForm.addEventListener('submit', async (e) => {
       body: formData
     });
 
-    console.log('Debug: API Response Status:', response.status);
-
     if (response.ok) {
       const result = await response.json();
-      console.log('Debug: API Response Body:', result);
-      modalMessage.innerText = `Tumor Type Detected: ${result.tumorType}`;
+
+      const tumorType = result.tumorType || result.tumor_type || '-';
+      const confidence = result.güven || '-';
+      const mrTahmini = result.mr_tahmini || '-';
+      const mrGuven = result.mr_güven || '-';
+      const anamnezTahmini = result.anamnez_tahmini || '-';
+      const anamnezGuven = result.anamnez_güven || '-';
+      const yorum = result.yorum || '-';
+
+      modalMessage.innerHTML = `
+    <strong>Tumor Type Detected:</strong> ${tumorType}<br>
+    <strong>Overall Confidence:</strong> ${confidence}<br>
+    <strong>MR-Based Prediction:</strong> ${mrTahmini} (${mrGuven})<br>
+    <strong>Anamnesis-Based Prediction:</strong> ${anamnezTahmini} (${anamnezGuven})<br>
+    <strong>Comment:</strong><br><em>${yorum}</em>
+  `;
+
       popupModal.classList.remove('hidden');
       await refreshHistory();
     } else {
       const errorData = await response.json();
-      console.error('Debug: Error Response Body:', errorData);
       modalMessage.innerText = `Error: ${
         errorData.message || 'Could not process the image.'
       }`;
       popupModal.classList.remove('hidden');
     }
   } catch (error) {
-    console.error('Debug: Network Error:', error);
     modalMessage.innerText = 'Network Error: Could not connect to the server.';
     popupModal.classList.remove('hidden');
   }
@@ -318,3 +339,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshHistory();
   }
 });
+const anamnezSorular = [
+  { key: 'gender', text: 'What is your gender?' },
+  { key: 'age', text: 'What is your age?' },
+  { key: 'epilepsy', text: 'Do you have epilepsy?' },
+  { key: 'morningHeadache', text: 'Do you have morning headaches?' },
+  { key: 'worseningHeadache', text: 'Do your headaches worsen over time?' },
+  { key: 'visionLoss', text: 'Have you experienced vision loss?' },
+  { key: 'hormonalIssues', text: 'Any hormonal problems?' },
+  { key: 'familyHistory', text: 'Any family history of tumor?' }
+];
+
+let currentAnamnezStep = 0;
+
+document.getElementById('customChooseFile').addEventListener('click', () => {
+  currentAnamnezStep = 0;
+  askNextAnamnezQuestion();
+});
+
+function askNextAnamnezQuestion() {
+  if (currentAnamnezStep >= anamnezSorular.length) {
+    document.getElementById('imageUpload').disabled = false;
+    document.getElementById('imageUpload').click(); // Dosya seçimi aç
+    return;
+  }
+
+  const soru = anamnezSorular[currentAnamnezStep];
+  let html = `<p class="modal-message">${soru.text}</p>`;
+
+  // 🎯 Sorunun tipine göre input oluştur
+  if (soru.key === 'gender') {
+    html += `
+      <select id="anamnezTemp" class="modal-select">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <br><button onclick="submitAnamnezValue()">Next</button>
+    `;
+  } else if (soru.key === 'age') {
+    html += `
+      <input type="number" id="anamnezTemp" min="1" max="120" />
+      <br><button onclick="submitAnamnezValue()">Next</button>
+    `;
+  } else {
+    html += `
+      <button onclick="answerAnamnez(true)">Yes</button>
+      <button onclick="answerAnamnez(false)">No</button>
+    `;
+  }
+
+  modalMessage.innerHTML = html;
+  popupModal.classList.remove('hidden');
+}
+function submitAnamnezValue() {
+  const soru = anamnezSorular[currentAnamnezStep];
+  const value = document.getElementById('anamnezTemp').value;
+
+  if (!value) return;
+
+  document.getElementById(soru.key).value = value;
+  popupModal.classList.add('hidden');
+  currentAnamnezStep++;
+  setTimeout(() => askNextAnamnezQuestion(), 200);
+}
+
+function answerAnamnez(answer) {
+  if (currentAnamnezStep >= anamnezSorular.length) {
+    document.getElementById('anamnezForm').classList.remove('hidden');
+    document.getElementById('imageUpload').disabled = false;
+    document.getElementById('imageUpload').click();
+    return;
+  }
+
+  const soru = anamnezSorular[currentAnamnezStep];
+
+  if (soru.key === 'gender') {
+    document.getElementById(soru.key).value = answer ? 'male' : 'female';
+  } else if (soru.key === 'age') {
+    document.getElementById(soru.key).value = answer ? 35 : 20;
+  } else {
+    document.getElementById(soru.key).checked = answer;
+  }
+
+  popupModal.classList.add('hidden');
+  currentAnamnezStep++;
+  setTimeout(() => askNextAnamnezQuestion(), 200);
+}
