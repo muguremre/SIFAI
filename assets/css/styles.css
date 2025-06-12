@@ -94,13 +94,49 @@ body {
   padding: 120px 0;
 }
 
+
+/* Upload Butonu */
+.projects__button {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  color: var(--first-color) !important;
+  background-color: var(--title-color) !important;
+  padding: 0.75rem 1.5rem !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  transition: background-color 0.3s ease
+  !important;
+}
+
+.projects__button:hover {
+  border:#8089ce 2px solid!important;
+  border-radius: 7px !important;
+  color: #fff !important;
+  background-color: var(--title-color-alt)
+  !important;
+}
+
 input,
 textarea,
 button {
-  outline: none;
-  border: none;
+  color:#fff;
+  padding: 0px 10px 0px 10px;
+  background: #8089ce;
+  margin-bottom: 8px;
+  border-radius: 5px;
+ 
+;
 }
+button:hover{
+  padding: 0px 11px 0px 11px;
+  background-color: #8089ce;
+  border-radius: 3px;
+  border :2px solid #fff;
 
+}
 h1,
 h2,
 h3,
@@ -152,7 +188,8 @@ svg {
 
 .section__subtitle {
   font-size: var(--small-font-size);
-  margin-bottom: 0.25rem;
+  margin-bottom: 40px;
+  margin-top: -40px;
 }
 
 .section__subtitle span {
@@ -357,6 +394,44 @@ svg {
   transform: translateY(-0.25rem);
 }
 
+.hexagon {
+  width: 350px;
+  height: 340px;
+  clip-path: polygon(
+    25% 6.7%, 75% 6.7%,
+    100% 50%, 75% 93.3%,
+    25% 93.3%, 0% 50%
+  );
+  -webkit-clip-path: polygon(
+    25% 6.7%, 75% 6.7%,
+    100% 50%, 75% 93.3%,
+    25% 93.3%, 0% 50%
+  );
+  overflow: hidden;
+  margin: 50px auto;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: transform 1.5s ease 0.6s, opacity 1.5s ease 0.6s;
+}
+
+.hexagon img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center; /* 👈 Resmi ortada tutar */
+
+
+}
+
+/* Animasyon sonrası aktif sınıf */
+.hexagon.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+
 .home__image {
   justify-self: center;
 }
@@ -477,11 +552,11 @@ svg {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 40px;
-  color: #222;
+  color: #ffffff;
 }
 
 .section__subtitle span {
-  color: #007bff; /* İstediğin vurgu rengi */
+  color: var(--first-color); /* İstediğin vurgu rengi */
 }
 
 /* ======= TEAM WRAPPER ======= */
@@ -494,6 +569,7 @@ svg {
 
 /* ======= KARTLARIN BULUNDUĞU KONTEYNER ======= */
 .team__container {
+  
   display: flex;
   gap: 35px; /* Kartlar arası boşluk */
   scroll-behavior: smooth;
@@ -503,9 +579,9 @@ svg {
 /* ======= BİREYSEL TAKIM KARTLARI ======= */
 .team__card {
   border-radius: 8px;
-  background: #5f4d4d;
+  background-image: url(/assets/img/team_Card_backgroud_2.jpeg);
   flex: 0 0 220px; /* Sabit genişlik, taşma yok */
-  border-radius: 12px;
+  border-radius: 15px;
 
   transition: transform 0.3s ease;
   text-align: center;
@@ -531,7 +607,7 @@ svg {
 
 .team__card h2 {
   font-size: 1.3rem;
-  color: #333;
+  color: var(--first-color);
   margin: 0;
   font-weight: 600;
   line-height: 1.3;
@@ -603,28 +679,9 @@ svg {
 }
 
 .projects__label:hover {
-  background-color: var(--first-color-alt);
+  background-color: hsl(245.77deg 40.29% 28.73%);
 }
 
-/* Upload Butonu */
-.projects__button {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #40a9ff;
-  background-color: var(--title-color);
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease;
-}
-
-.projects__button:hover {
-  color: #fff;
-  background-color: var(--title-color-alt);
-}
 .projects__preview {
   width: 300px;
   height: 300px;
@@ -650,6 +707,12 @@ svg {
   object-fit: contain;
   position: absolute;
   border-radius: 4px;
+}
+
+
+.input_checkbox{
+   border-radius:16px;
+   background-color: #8089ce;
 }
 
 .hidden {
@@ -790,6 +853,15 @@ svg {
 
 /*=============== CONTACT ===============*/
 
+.contact{
+    width: 100%;
+  height: 100vh; /* Tam ekran yüksekliği */
+  position: relative;
+  overflow: hidden;
+}
+
+
+
 .contact__container {
   padding-top: 1rem;
 }
@@ -816,14 +888,14 @@ svg {
 }
 
 .contact__form textarea {
-  height: 11rem;
+
   resize: none;
   margin-bottom: 2rem;
 }
 
 .contact__button {
-  justify-content: center;
-  cursor: pointer;
+  justify-content: center !important;
+  cursor: pointer !important;
 }
 
 .contact__message {
@@ -863,7 +935,7 @@ svg {
 
 .footer {
   background-color: var(--container-color);
-  padding-block: 3.5rem 2rem;
+  
 }
 
 .footer__container {
@@ -995,6 +1067,7 @@ svg {
   .skills__data,
   :is(.about__data, .skills__data) :is(.section__subtitle, .section__title) {
     text-align: initial;
+    width: 500px ;
   }
   .home__social {
     justify-content: initial;
@@ -1117,10 +1190,10 @@ svg {
     padding: 1.5rem;
   }
   .contact__form textarea {
-    height: 20rem;
+    height: 10rem;
   }
   .footer {
-    padding-block: 4.5rem 4rem;
+    padding-block: 1rem 0.5rem;
   }
   .footer__container {
     grid-template-columns: repeat(3, 1fr);

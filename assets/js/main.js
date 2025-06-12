@@ -17,6 +17,13 @@ if (navClose) {
   });
 }
 
+  window.addEventListener('load', () => {
+    document.querySelector('.hexagon').classList.add('active');
+  });
+
+
+
+
 /*=============== REMOVE MENU MOBILE ===============*/
 const navLink = document.querySelectorAll('.nav__link');
 
