@@ -94,7 +94,6 @@ body {
   padding: 120px 0;
 }
 
-
 /* Upload Butonu */
 .projects__button {
   font-size: 1rem !important;
@@ -107,35 +106,30 @@ body {
   cursor: pointer !important;
   text-align: center !important;
   text-transform: uppercase !important;
-  transition: background-color 0.3s ease
-  !important;
+  transition: background-color 0.3s ease !important;
 }
 
 .projects__button:hover {
-  border:#8089ce 2px solid!important;
+  border: #8089ce 2px solid !important;
   border-radius: 7px !important;
   color: #fff !important;
-  background-color: var(--title-color-alt)
-  !important;
+  background-color: var(--title-color-alt) !important;
 }
 
 input,
 textarea,
 button {
-  color:#fff;
+  color: #fff;
   padding: 0px 10px 0px 10px;
   background: #8089ce;
   margin-bottom: 8px;
   border-radius: 5px;
- 
-;
 }
-button:hover{
+button:hover {
   padding: 0px 11px 0px 11px;
   background-color: #8089ce;
   border-radius: 3px;
-  border :2px solid #fff;
-
+  border: 2px solid #fff;
 }
 h1,
 h2,
@@ -398,14 +392,20 @@ svg {
   width: 350px;
   height: 340px;
   clip-path: polygon(
-    25% 6.7%, 75% 6.7%,
-    100% 50%, 75% 93.3%,
-    25% 93.3%, 0% 50%
+    25% 6.7%,
+    75% 6.7%,
+    100% 50%,
+    75% 93.3%,
+    25% 93.3%,
+    0% 50%
   );
   -webkit-clip-path: polygon(
-    25% 6.7%, 75% 6.7%,
-    100% 50%, 75% 93.3%,
-    25% 93.3%, 0% 50%
+    25% 6.7%,
+    75% 6.7%,
+    100% 50%,
+    75% 93.3%,
+    25% 93.3%,
+    0% 50%
   );
   overflow: hidden;
   margin: 50px auto;
@@ -420,8 +420,6 @@ svg {
 
   object-fit: cover;
   object-position: center; /* 👈 Resmi ortada tutar */
-
-
 }
 
 /* Animasyon sonrası aktif sınıf */
@@ -429,8 +427,6 @@ svg {
   transform: translateY(0);
   opacity: 1;
 }
-
-
 
 .home__image {
   justify-self: center;
@@ -569,7 +565,6 @@ svg {
 
 /* ======= KARTLARIN BULUNDUĞU KONTEYNER ======= */
 .team__container {
-  
   display: flex;
   gap: 35px; /* Kartlar arası boşluk */
   scroll-behavior: smooth;
@@ -709,10 +704,9 @@ svg {
   border-radius: 4px;
 }
 
-
-.input_checkbox{
-   border-radius:16px;
-   background-color: #8089ce;
+.input_checkbox {
+  border-radius: 16px;
+  background-color: #8089ce;
 }
 
 .hidden {
@@ -731,6 +725,21 @@ svg {
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
 }
+.modal-text {
+  width: 250px;
+}
+.modal-image {
+  width: 250px;
+}
+
+.modal-body-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* mobil uyumlu hale getirir */
+}
 
 .modal-content {
   background-color: var(--container-color);
@@ -738,7 +747,7 @@ svg {
   border-radius: 1.25rem;
   text-align: center;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
-  max-width: 500px;
+  max-width: 800px;
   width: 90%;
   border: 2px solid var(--first-color);
   transition: all 0.3s ease-in-out;
@@ -853,14 +862,12 @@ svg {
 
 /*=============== CONTACT ===============*/
 
-.contact{
-    width: 100%;
+.contact {
+  width: 100%;
   height: 100vh; /* Tam ekran yüksekliği */
   position: relative;
   overflow: hidden;
 }
-
-
 
 .contact__container {
   padding-top: 1rem;
@@ -888,7 +895,6 @@ svg {
 }
 
 .contact__form textarea {
-
   resize: none;
   margin-bottom: 2rem;
 }
@@ -935,7 +941,6 @@ svg {
 
 .footer {
   background-color: var(--container-color);
-  
 }
 
 .footer__container {
@@ -1067,7 +1072,7 @@ svg {
   .skills__data,
   :is(.about__data, .skills__data) :is(.section__subtitle, .section__title) {
     text-align: initial;
-    width: 500px ;
+    width: 500px;
   }
   .home__social {
     justify-content: initial;

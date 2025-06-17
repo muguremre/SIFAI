@@ -17,12 +17,9 @@ if (navClose) {
   });
 }
 
-  window.addEventListener('load', () => {
-    document.querySelector('.hexagon').classList.add('active');
-  });
-
-
-
+window.addEventListener('load', () => {
+  document.querySelector('.hexagon').classList.add('active');
+});
 
 /*=============== REMOVE MENU MOBILE ===============*/
 const navLink = document.querySelectorAll('.nav__link');
@@ -237,6 +234,14 @@ uploadForm.addEventListener('submit', async (e) => {
     <strong>Anamnesis-Based Prediction:</strong> ${anamnezTahmini} (${anamnezGuven})<br>
     <strong>Comment:</strong><br><em>${yorum}</em>
   `;
+      const segmentationImage = document.getElementById('segmentationImage');
+
+      if (result.segmentation_image_base64) {
+        segmentationImage.src = `data:image/png;base64,${result.segmentation_image_base64}`;
+        segmentationImage.classList.remove('hidden');
+      } else {
+        segmentationImage.classList.add('hidden');
+      }
 
       popupModal.classList.remove('hidden');
       await refreshHistory();
@@ -311,16 +316,20 @@ function displayHistory(results, container) {
   container.innerHTML = historyHtml;
 }
 
-// Modal Elementleri
 const popupModal = document.getElementById('popupModal');
 const modalMessage = document.getElementById('modalMessage');
 const closeModal = document.getElementById('closeModal');
 
-// Modalı kapatma işlemi
 closeModal.addEventListener('click', () => {
-  popupModal.classList.add('hidden'); // Modalı gizle
+  popupModal.classList.add('hidden');
+
+  const segmentationImage = document.getElementById('segmentationImage');
+  segmentationImage.src = '';
+  segmentationImage.classList.add('hidden');
+
+  modalMessage.innerHTML = '';
 });
-// Çıkış Yapma İşlevi
+
 const logoutButton = document.getElementById('logoutButton');
 
 logoutButton.addEventListener('click', () => {
@@ -332,7 +341,7 @@ logoutButton.addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const userId = localStorage.getItem('userId'); // Kullanıcı kimliği
+  const userId = localStorage.getItem('userId');
   console.log('Debug: Loaded userId:', userId);
 
   if (!userId) {
@@ -341,7 +350,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     window.location.href = 'login.html';
   } else {
-    // Eğer kullanıcı giriş yapmışsa geçmiş sorguları yükle
     console.log('Debug: Refreshing history on page load...');
     await refreshHistory();
   }
