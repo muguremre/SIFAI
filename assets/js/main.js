@@ -173,7 +173,6 @@ uploadForm.addEventListener('submit', async (e) => {
 
   const file = imageUpload.files[0];
   const userId = localStorage.getItem('userId');
-  
 
   if (!userId) {
     modalMessage.innerText = 'User is not logged in.';
@@ -411,9 +410,14 @@ function askNextAnamnezQuestion() {
   }
 
   const soru = anamnezSorular[currentAnamnezStep];
-  let html = `<p class="modal-message">${soru.text}</p>`;
+  let html = `<p class="modal-message">${soru.text}</p><div>`;
 
-  if (soru.key === 'gender') {
+  if (soru.options && Array.isArray(soru.options)) {
+    soru.options.forEach((optionText, index) => {
+      html += `<button onclick="answerAnamnez(${index})">${optionText}</button>`;
+    });
+    html += '</div>';
+  } else if (soru.key === 'gender') {
     html += `
       <select id="anamnezTemp" class="modal-select">
         <option value="male">Male</option>
@@ -428,14 +432,15 @@ function askNextAnamnezQuestion() {
     `;
   } else {
     html += `
-      <button onclick="answerAnamnez(true)">Yes</button>
-      <button onclick="answerAnamnez(false)">No</button>
+      <button onclick="answerAnamnez(1)">Yes</button>
+      <button onclick="answerAnamnez(0)">No</button>
     `;
   }
 
   modalMessage.innerHTML = html;
   popupModal.classList.remove('hidden');
 }
+
 function submitAnamnezValue() {
   const soru = anamnezSorular[currentAnamnezStep];
   const value = document.getElementById('anamnezTemp').value;
@@ -450,7 +455,6 @@ function submitAnamnezValue() {
 
 function answerAnamnez(answer) {
   if (currentAnamnezStep >= anamnezSorular.length) {
-    document.getElementById('anamnezForm').classList.remove('hidden');
     document.getElementById('imageUpload').disabled = false;
     document.getElementById('imageUpload').click();
     return;
@@ -466,11 +470,7 @@ function answerAnamnez(answer) {
     return;
   }
 
-  if (el.type === 'checkbox') {
-    el.checked = answer;
-  } else {
-    el.value = answer ? 'yes' : 'no';
-  }
+  el.value = answer;
 
   popupModal.classList.add('hidden');
   currentAnamnezStep++;
@@ -491,15 +491,101 @@ const anamnezQuestionsBrain = [
 ];
 
 const anamnezQuestionsSkin = [
-  { key: 'fark_suresi', text: 'Lesion duration (days)?' },
-  { key: 'renk_degisti', text: 'Did the lesion change color?' },
-  { key: 'kenar_duzensiz', text: 'Are the borders irregular?' },
-  { key: 'kasinti_kanama', text: 'Itching or bleeding observed?' },
-  { key: 'ailede_kanser', text: 'Family history of cancer?' },
-  { key: 'gunes_maruz', text: 'High sun exposure?' },
-  { key: 'lezyon_kabuk', text: 'Is there crust on the lesion?' },
-  { key: 'travma_sonrasi', text: 'Did it form after trauma?' },
-  { key: 'ten_rengi', text: 'Skin color (scale)?' },
-  { key: 'tedavi_alindi', text: 'Have you received treatment?' },
-  { key: 'bolge', text: 'Body region of lesion?' }
+  {
+    key: 'fark_suresi',
+    text: 'When did you first notice the lesion?',
+    options: [
+      'Less than 1 month',
+      '1–6 months',
+      '6–12 months',
+      'More than 1 year'
+    ]
+  },
+  {
+    key: 'renk_degisti',
+    text: 'Has the color of the lesion changed recently?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'kenar_duzensiz',
+    text: 'Are the borders of the lesion irregular?',
+    options: ['Regular', 'Irregular']
+  },
+  {
+    key: 'kasinti_kanama',
+    text: 'Does it itch, hurt, or bleed?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'ailede_kanser',
+    text: 'Any family history of skin cancer?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'gunes_maruz',
+    text: 'How often are you exposed to the sun?',
+    options: ['Rarely', 'Occasionally', 'Frequently']
+  },
+  {
+    key: 'lezyon_kabuk',
+    text: 'Is there crusting on the lesion?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'travma_sonrasi',
+    text: 'Did it appear after an injury/trauma?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'ten_rengi',
+    text: 'What is your skin tone?',
+    options: ['Dark', 'Medium', 'Light']
+  },
+  {
+    key: 'tedavi_alindi',
+    text: 'Have you received treatment for this lesion?',
+    options: ['No', 'Yes']
+  },
+  {
+    key: 'bolge',
+    text: 'Where is the lesion located?',
+    options: ['Face', 'Arm', 'Leg', 'Torso', 'Hand/Foot']
+  }
 ];
+
+document.getElementById('emailInput').addEventListener('input', function () {
+  const email = this.value.toLowerCase();
+  const allowedDomains = [
+    'gmail.com',
+    'hotmail.com',
+    'outlook.com',
+    'icloud.com'
+  ];
+  const domain = email.split('@')[1];
+  const errorSpan = document.getElementById('emailError');
+
+  if (domain && !allowedDomains.includes(domain)) {
+    errorSpan.style.display = 'block';
+    this.setCustomValidity('Bu e-posta sağlayıcısı kabul edilmiyor.');
+  } else {
+    errorSpan.style.display = 'none';
+    this.setCustomValidity('');
+  }
+});
+document
+  .getElementById('contact-form')
+  .addEventListener('submit', function (e) {
+    const email = document.getElementById('emailInput').value.toLowerCase();
+    const domain = email.split('@')[1];
+    const allowedDomains = [
+      'gmail.com',
+      'hotmail.com',
+      'outlook.com',
+      'icloud.com'
+    ];
+
+    if (!allowedDomains.includes(domain)) {
+      e.preventDefault(); // gönderimi engelle
+      alert('Sadece gmail, hotmail, outlook veya icloud adresi kabul edilir.');
+    }
+  });

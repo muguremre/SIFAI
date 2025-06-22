@@ -157,9 +157,20 @@ body {
   color: #a396f2;
   word-wrap: break-word;
 }
+@media screen and (max-width: 768px) {
+  .analysis__selection {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
 
-
-
+  .analysis__button__1,
+  .analysis__button__2 {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 300px;
+  }
+}
 
 /* Upload Butonu */
 .projects__button {
@@ -175,7 +186,8 @@ body {
   text-align: center !important;
   text-transform: uppercase !important;
 
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -521,8 +533,8 @@ svg {
 }
 
 .button:hover {
-   color: #000000d1;
-   font-weight:500;
+  color: #000000d1;
+  font-weight: 500;
   box-shadow: 0 20px 38px hsla(var(--hue), 100%, 40%, 0.25);
 }
 /*=============== ABOUT ===============*/
@@ -599,7 +611,7 @@ svg {
 }
 
 .skills__item::marker {
-    text-shadow: 2px 1px black;
+  text-shadow: 2px 1px black;
   color: var(--first-color);
 }
 /*=============== ICONS ===============*/
@@ -640,9 +652,10 @@ svg {
 /* ======= KARTLARIN BULUNDUĞU KONTEYNER ======= */
 .team__container {
   display: flex;
-  gap: 35px; /* Kartlar arası boşluk */
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 /* ======= BİREYSEL TAKIM KARTLARI ======= */
@@ -814,6 +827,35 @@ svg {
   justify-content: center;
   flex-wrap: wrap; /* mobil uyumlu hale getirir */
 }
+/* Bunu styles.css'e ekle */
+.history__section {
+  flex: 1;
+  min-width: 320px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .history__container {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .history__section {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+  }
+
+  .history__cards-wrapper {
+    justify-content: center;
+  }
+}
 
 .modal-content {
   background-color: var(--container-color);
@@ -911,10 +953,11 @@ svg {
 
 /* History Section Styles */
 .history__container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .history__card {
@@ -1011,10 +1054,8 @@ svg {
 }
 
 .contact__button:active {
-
   background: #8089ceab;
 }
-
 
 .contact__message {
   position: absolute;
