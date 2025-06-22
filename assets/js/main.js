@@ -1,3 +1,5 @@
+let selectedAnalysisType = null;
+
 /*=============== SHOW MENU ===============*/
 const navMenu = document.getElementById('nav-menu'),
   navToggle = document.getElementById('nav-toggle'),
@@ -171,6 +173,7 @@ uploadForm.addEventListener('submit', async (e) => {
 
   const file = imageUpload.files[0];
   const userId = localStorage.getItem('userId');
+  document.getElementById('anamnezForm').classList.remove('hidden');
 
   if (!userId) {
     modalMessage.innerText = 'User is not logged in.';
@@ -189,29 +192,31 @@ uploadForm.addEventListener('submit', async (e) => {
   formData.append('UserId', userId);
 
   // ✅ Anamnez verilerini formData’ya ekle
-  formData.append('Gender', document.getElementById('gender').value);
-  formData.append('Age', document.getElementById('age').value);
-  formData.append('Epilepsy', document.getElementById('epilepsy').checked);
-  formData.append(
-    'MorningHeadache',
-    document.getElementById('morningHeadache').checked
-  );
-  formData.append(
-    'WorseningHeadache',
-    document.getElementById('worseningHeadache').checked
-  );
-  formData.append('VisionLoss', document.getElementById('visionLoss').checked);
-  formData.append(
-    'HormonalIssues',
-    document.getElementById('hormonalIssues').checked
-  );
-  formData.append(
-    'FamilyHistory',
-    document.getElementById('familyHistory').checked
-  );
+  anamnezSorular.forEach((soru) => {
+    const el = document.getElementById(soru.key);
+    if (!el) return;
+
+    let val;
+    if (el.type === 'checkbox') {
+      val = el.checked;
+    } else {
+      val = el.value;
+    }
+
+    const keyPrefix = selectedAnalysisType === 'skin' ? 'Anamnez.' : '';
+    formData.append(keyPrefix + soru.key, val);
+  });
 
   try {
-    const response = await fetch('https://localhost:7100/api/Tumor/detect', {
+    let endpoint = '';
+
+    if (selectedAnalysisType === 'skin') {
+      endpoint = 'https://localhost:7100/api/SkinCancer/detect';
+    } else {
+      endpoint = 'https://localhost:7100/api/Tumor/detect';
+    }
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       body: formData
     });
@@ -219,21 +224,30 @@ uploadForm.addEventListener('submit', async (e) => {
     if (response.ok) {
       const result = await response.json();
 
-      const tumorType = result.tumorType || result.tumor_type || '-';
-      const confidence = result.güven || '-';
-      const mrTahmini = result.mr_tahmini || '-';
-      const mrGuven = result.mr_güven || '-';
-      const anamnezTahmini = result.anamnez_tahmini || '-';
-      const anamnezGuven = result.anamnez_güven || '-';
-      const yorum = result.yorum || '-';
-
-      modalMessage.innerHTML = `
-    <strong>Tumor Type Detected:</strong> ${tumorType}<br>
-    <strong>Overall Confidence:</strong> ${confidence}<br>
-    <strong>MR-Based Prediction:</strong> ${mrTahmini} (${mrGuven})<br>
-    <strong>Anamnesis-Based Prediction:</strong> ${anamnezTahmini} (${anamnezGuven})<br>
-    <strong>Comment:</strong><br><em>${yorum}</em>
+      if (selectedAnalysisType === 'skin') {
+        modalMessage.innerHTML = `
+    <strong>Predicted Type:</strong> ${result.tahmin || '-'}<br>
+    <strong>Overall Confidence:</strong> ${result.ensemble_skor || '-'}<br>
+    <strong>Image-Based Score:</strong> ${result.gorsel_skor || '-'}<br>
+    <strong>Anamnesis-Based Score:</strong> ${result.anamnez_skor || '-'}<br>
+    <strong>Comment:</strong><br><em>${result.yorum || '-'}</em>
   `;
+      } else {
+        modalMessage.innerHTML = `
+    <strong>Tumor Type Detected:</strong> ${
+      result.tumorType || result.tumor_type || '-'
+    }<br>
+    <strong>Overall Confidence:</strong> ${result.güven || '-'}<br>
+    <strong>MR-Based Prediction:</strong> ${result.mr_tahmini || '-'} (${
+          result.mr_güven || '-'
+        })<br>
+    <strong>Anamnesis-Based Prediction:</strong> ${
+      result.anamnez_tahmini || '-'
+    } (${result.anamnez_güven || '-'})<br>
+    <strong>Comment:</strong><br><em>${result.yorum || '-'}</em>
+  `;
+      }
+
       const segmentationImage = document.getElementById('segmentationImage');
 
       if (result.segmentation_image_base64) {
@@ -258,62 +272,77 @@ uploadForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Kullanıcının geçmiş sonuçlarını yenilemek için fonksiyon
 async function refreshHistory() {
-  const userId = localStorage.getItem('userId'); // Kullanıcının ID'sini kontrol et
-  console.log('Debug: Refresh history for userId:', userId);
-
+  const userId = localStorage.getItem('userId');
   const historyContainer = document.getElementById('history-container');
+
   if (!userId) {
-    console.error('Debug: No userId found. Cannot refresh history.');
-    historyContainer.innerHTML = `<p>User is not logged in. Please log in to view history.</p>`;
+    historyContainer.innerHTML = `<p>User is not logged in.</p>`;
     return;
   }
 
+  historyContainer.innerHTML = `<p>Loading history...</p>`;
+
   try {
-    const response = await fetch(
+    const brainRes = await fetch(
       `https://localhost:7100/api/Tumor/history/${userId}`
     );
-    console.log('Debug: History API Response Status:', response.status);
+    const skinRes = await fetch(
+      `https://localhost:7100/api/SkinCancer/history/${userId}`
+    );
 
-    if (response.ok) {
-      const results = await response.json();
-      console.log('Debug: History Results:', results);
-      displayHistory(results, historyContainer);
-    } else {
-      console.error('Debug: Error fetching history. Status:', response.status);
-      historyContainer.innerHTML = `<p>Error fetching history. Please try again later.</p>`;
-    }
+    const brainData = brainRes.ok ? await brainRes.json() : { $values: [] };
+    const skinData = skinRes.ok ? await skinRes.json() : { $values: [] };
+
+    let combinedHtml = '';
+
+    combinedHtml += displayHistory(brainData.$values, 'brain');
+
+    combinedHtml += displayHistory(skinData.$values, 'skin');
+
+    historyContainer.innerHTML = combinedHtml;
   } catch (error) {
-    console.error('Debug: Network error while fetching history:', error);
+    console.error('History fetch error:', error);
     historyContainer.innerHTML = `<p>Network error. Please try again later.</p>`;
   }
 }
 
-// Gelen sonuçları göster
-function displayHistory(results, container) {
-  if (!results.$values || results.$values.length === 0) {
-    container.innerHTML = `<p>No results found.</p>`;
-    return;
-  }
+function displayHistory(resultsArray, type) {
+  if (!resultsArray || resultsArray.length === 0) return '';
 
-  const historyHtml = results.$values
-    .map(
-      (result) => `
-    <div class="history__card">
-      <img class="history__image" src="https://localhost:7100/uploads/${
-        result.imageUrl
-      }" alt="${result.tumorType}">
-      <h3 class="history__title">Tumor Type: ${result.tumorType}</h3>
-      <p class="history__date">Detection Date: ${new Date(
-        result.detectionDate
-      ).toLocaleDateString()}</p>
-    </div>
-  `
-    )
+  const titleLabel =
+    type === 'skin' ? 'Skin Cancer History' : 'Brain Tumor History';
+
+  const cardsHtml = resultsArray
+    .map((result) => {
+      const imageSrc = `https://localhost:7100/uploads/${result.imageUrl}`;
+      const date = new Date(result.detectionDate).toLocaleDateString();
+
+      const tumorLabel =
+        type === 'skin'
+          ? result.tahmin || result.prediction || '-'
+          : result.tumorType || result.tumor_type || '-';
+
+      const label = type === 'skin' ? 'Skin Type' : 'Tumor Type';
+
+      return `
+        <div class="history__card">
+          <img class="history__image" src="${imageSrc}" alt="${tumorLabel}">
+          <h3 class="history__title">${label}: ${tumorLabel}</h3>
+          <p class="history__date">Detection Date: ${date}</p>
+        </div>
+      `;
+    })
     .join('');
 
-  container.innerHTML = historyHtml;
+  return `
+    <div class="history__section">
+      <h3 class="history__subtitle">${titleLabel}</h3>
+      <div class="history__cards-wrapper">
+        ${cardsHtml}
+      </div>
+    </div>
+  `;
 }
 
 const popupModal = document.getElementById('popupModal');
@@ -339,6 +368,18 @@ logoutButton.addEventListener('click', () => {
   console.log('Debug: userId and token removed from localStorage.');
   window.location.href = 'login.html';
 });
+function selectAnalysisType(type) {
+  selectedAnalysisType = type;
+  currentAnamnezStep = 0;
+
+  if (type === 'brain') {
+    anamnezSorular = [...anamnezQuestionsBrain];
+  } else if (type === 'skin') {
+    anamnezSorular = [...anamnezQuestionsSkin];
+  }
+
+  askNextAnamnezQuestion();
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   const userId = localStorage.getItem('userId');
@@ -354,16 +395,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshHistory();
   }
 });
-const anamnezSorular = [
-  { key: 'gender', text: 'What is your gender?' },
-  { key: 'age', text: 'What is your age?' },
-  { key: 'epilepsy', text: 'Do you have epilepsy?' },
-  { key: 'morningHeadache', text: 'Do you have morning headaches?' },
-  { key: 'worseningHeadache', text: 'Do your headaches worsen over time?' },
-  { key: 'visionLoss', text: 'Have you experienced vision loss?' },
-  { key: 'hormonalIssues', text: 'Any hormonal problems?' },
-  { key: 'familyHistory', text: 'Any family history of tumor?' }
-];
 
 let currentAnamnezStep = 0;
 
@@ -375,14 +406,13 @@ document.getElementById('customChooseFile').addEventListener('click', () => {
 function askNextAnamnezQuestion() {
   if (currentAnamnezStep >= anamnezSorular.length) {
     document.getElementById('imageUpload').disabled = false;
-    document.getElementById('imageUpload').click(); // Dosya seçimi aç
+    document.getElementById('imageUpload').click();
     return;
   }
 
   const soru = anamnezSorular[currentAnamnezStep];
   let html = `<p class="modal-message">${soru.text}</p>`;
 
-  // 🎯 Sorunun tipine göre input oluştur
   if (soru.key === 'gender') {
     html += `
       <select id="anamnezTemp" class="modal-select">
@@ -427,16 +457,49 @@ function answerAnamnez(answer) {
   }
 
   const soru = anamnezSorular[currentAnamnezStep];
+  const el = document.getElementById(soru.key);
 
-  if (soru.key === 'gender') {
-    document.getElementById(soru.key).value = answer ? 'male' : 'female';
-  } else if (soru.key === 'age') {
-    document.getElementById(soru.key).value = answer ? 35 : 20;
+  if (!el) {
+    console.warn(`Element not found for ${soru.key}`);
+    currentAnamnezStep++;
+    askNextAnamnezQuestion();
+    return;
+  }
+
+  if (el.type === 'checkbox') {
+    el.checked = answer;
   } else {
-    document.getElementById(soru.key).checked = answer;
+    el.value = answer ? 'yes' : 'no';
   }
 
   popupModal.classList.add('hidden');
   currentAnamnezStep++;
   setTimeout(() => askNextAnamnezQuestion(), 200);
 }
+
+let anamnezSorular = [];
+
+const anamnezQuestionsBrain = [
+  { key: 'gender', text: 'What is your gender?' },
+  { key: 'age', text: 'What is your age?' },
+  { key: 'epilepsy', text: 'Do you have epilepsy?' },
+  { key: 'morningHeadache', text: 'Do you have morning headaches?' },
+  { key: 'worseningHeadache', text: 'Do your headaches worsen over time?' },
+  { key: 'visionLoss', text: 'Have you experienced vision loss?' },
+  { key: 'hormonalIssues', text: 'Any hormonal problems?' },
+  { key: 'familyHistory', text: 'Any family history of tumor?' }
+];
+
+const anamnezQuestionsSkin = [
+  { key: 'fark_suresi', text: 'Lesion duration (days)?' },
+  { key: 'renk_degisti', text: 'Did the lesion change color?' },
+  { key: 'kenar_duzensiz', text: 'Are the borders irregular?' },
+  { key: 'kasinti_kanama', text: 'Itching or bleeding observed?' },
+  { key: 'ailede_kanser', text: 'Family history of cancer?' },
+  { key: 'gunes_maruz', text: 'High sun exposure?' },
+  { key: 'lezyon_kabuk', text: 'Is there crust on the lesion?' },
+  { key: 'travma_sonrasi', text: 'Did it form after trauma?' },
+  { key: 'ten_rengi', text: 'Skin color (scale)?' },
+  { key: 'tedavi_alindi', text: 'Have you received treatment?' },
+  { key: 'bolge', text: 'Body region of lesion?' }
+];

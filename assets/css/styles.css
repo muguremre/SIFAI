@@ -815,6 +815,25 @@ svg {
 .hidden {
   display: none;
 }
+.analysis-type-buttons button {
+  margin: 0 10px;
+  min-width: 180px;
+}
+.history__section {
+  margin-bottom: 3rem;
+}
+
+.history__subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.history__cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
 
 /* History Section Styles */
 .history__container {

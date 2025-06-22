@@ -277,6 +277,15 @@
         </div>
         </div>
         <section class="projects section" id="projects">
+          <div class="analysis-type-buttons" style="text-align:center; margin-bottom: 20px;">
+  <button type="button" class="projects__button" onclick="selectAnalysisType('brain')">
+    Brain Tumor Analysis
+  </button>
+  <button type="button" class="projects__button" onclick="selectAnalysisType('skin')">
+    Skin Cancer Analysis
+  </button>
+</div>
+
           <h3 class="section__subtitle">Answer  <span>Anamnesis</span></h3>
            <h3 style="color: #a396f2; text-shadow:0.5px 0.5px #ffffff;" class="section__subtitle">&</h3>
           <h3 class="section__subtitle">Upload <span>Image</span></h3>
@@ -286,7 +295,7 @@
               <div id="anamnezForm" class="anamnez__form hidden">
                 <label
                   >Gender:
-                  <select id="gender" required>
+                  <select id="gender" name="gender">
                     <option value="">Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -295,7 +304,7 @@
 
                 <label
                   >Age:
-                  <input class="input_number" type="number" id="age" min="0" required />
+                  <input class="input_number" type="number" id="age" min="0" name="age"/>
                 </label>
 
                 <label
@@ -327,6 +336,19 @@
                   >Family History:
                   <input  class="input_checkbox" type="checkbox" id="familyHistory" />
                 </label>
+                <!-- Skin için gizli alanlar -->
+<input type="hidden" id="fark_suresi" name="fark_suresi" />
+<input type="hidden" id="renk_degisti" name="renk_degisti" />
+<input type="hidden" id="kenar_duzensiz" name="kenar_duzensiz" />
+<input type="hidden" id="kasinti_kanama" name="kasinti_kanama" />
+<input type="hidden" id="ailede_kanser" name="ailede_kanser" />
+<input type="hidden" id="gunes_maruz" name="gunes_maruz" />
+<input type="hidden" id="lezyon_kabuk" name="lezyon_kabuk" />
+<input type="hidden" id="travma_sonrasi" name="travma_sonrasi" />
+<input type="hidden" id="ten_rengi" name="ten_rengi" />
+<input type="hidden" id="tedavi_alindi" name="tedavi_alindi" />
+<input type="hidden" id="bolge" name="bolge" />
+
               </div>
 
               <label class="projects__label" id="customChooseFile">
