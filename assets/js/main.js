@@ -173,7 +173,7 @@ uploadForm.addEventListener('submit', async (e) => {
 
   const file = imageUpload.files[0];
   const userId = localStorage.getItem('userId');
-  document.getElementById('anamnezForm').classList.remove('hidden');
+  
 
   if (!userId) {
     modalMessage.innerText = 'User is not logged in.';

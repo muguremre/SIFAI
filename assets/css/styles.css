@@ -94,26 +94,97 @@ body {
   padding: 120px 0;
 }
 
+.analysis__selection {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  /* yan yana, taşma engellenir */
+  gap: 8rem;
+  /* butonlar üst üste değil */
+  margin: 2rem auto;
+  min-height: 240px;
+  max-width: 300px;
+  /* container daralır */
+  padding: 0 1rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.analysis__button__1,
+.analysis__button__2 {
+  background-color: #2d2e3e;
+  border: 2px solid #a396f2;
+  border-radius: 1rem;
+  padding: 1rem;
+  flex: 0 0 300px;
+  /* kesin genişlik */
+  height: 240px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
+}
+
+.analysis__button__1:hover,
+.analysis__button__2:hover {
+  transform: translateY(-5px);
+  border-radius: 1rem;
+  background-color: #2d2e3e79;
+  border: 2px solid #a396f2;
+  box-shadow: 0 10px 20px rgba(163, 150, 242, 0.3);
+}
+
+.analysis__button__1 img,
+.analysis__button__2 img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.analysis__button__1 span,
+.analysis__button__2 span {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #a396f2;
+  word-wrap: break-word;
+}
+
+
+
+
 /* Upload Butonu */
 .projects__button {
   font-size: 1rem !important;
   font-weight: bold !important;
+  line-height: 1.2 !important; /* Yazı dikey hizalama sabitlenir */
   color: var(--first-color) !important;
   background-color: var(--title-color) !important;
   padding: 0.75rem 1.5rem !important;
-  border: none !important;
+  border: 0.5px solid transparent !important; /* Sabit border */
   border-radius: 8px !important;
   cursor: pointer !important;
   text-align: center !important;
   text-transform: uppercase !important;
-  transition: background-color 0.3s ease !important;
+
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .projects__button:hover {
-  border: #8089ce 2px solid !important;
-  border-radius: 7px !important;
   color: #fff !important;
   background-color: var(--title-color-alt) !important;
+  border-color: #8089ce !important;
 }
 
 input,
@@ -450,7 +521,9 @@ svg {
 }
 
 .button:hover {
-  box-shadow: 0 8px 24px hsla(var(--hue), 100%, 40%, 0.25);
+   color: #000000d1;
+   font-weight:500;
+  box-shadow: 0 20px 38px hsla(var(--hue), 100%, 40%, 0.25);
 }
 /*=============== ABOUT ===============*/
 
@@ -526,6 +599,7 @@ svg {
 }
 
 .skills__item::marker {
+    text-shadow: 2px 1px black;
   color: var(--first-color);
 }
 /*=============== ICONS ===============*/
@@ -917,11 +991,30 @@ svg {
   resize: none;
   margin-bottom: 2rem;
 }
-
 .contact__button {
-  justify-content: center !important;
-  cursor: pointer !important;
+  color: #fff;
+  padding: 0px 10px;
+  height: 50px;
+  background: #8089ce;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
+/* Hover efekti: sadece renk ve gölge değişir, pozisyon sabit kalır */
+.contact__button:hover {
+  background: #6e77c9; /* Hafif koyu ton */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Gölge efekti */
+}
+
+.contact__button:active {
+
+  background: #8089ceab;
+}
+
 
 .contact__message {
   position: absolute;
@@ -949,6 +1042,15 @@ svg {
   color: #fff;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
+
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: var(--h3-font-size);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logout-button:active {

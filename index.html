@@ -256,6 +256,24 @@
       <section style="background-color:hsl(229.09deg 14.29% 15.1%)">
         <!--==================== PROJECTS ====================-->
         <!-- Modal -->
+
+        
+    <div class="analysis__selection" id="analysisSelection">
+  <button id="brainButton" class="analysis__button__1" onclick="selectAnalysisType('brain')">
+    <img src="/assets/img/brain.gif" alt="Brain Tumor Analysis" />
+    <span>Brain Tumor Analysis</span>
+  </button>
+
+  <button id="skinButton" class="analysis__button__2" onclick="selectAnalysisType('skin')">
+    <img src="/assets/img/skin.gif" alt="Skin Cancer Analysis" />
+    <span>Skin Cancer Analysis</span>
+  </button>
+</div>
+
+              <label style="visibility: hidden;" class="projects__label" id="customChooseFile">
+                Begin Analysis
+              </label>
+
         <div id="anamnezModal" class="modal hidden">
           <div class="modal-content">
             <p id="anamnezQuestion" class="modal-message"></p>
@@ -278,12 +296,9 @@
         </div>
         <section class="projects section" id="projects">
           <div class="analysis-type-buttons" style="text-align:center; margin-bottom: 20px;">
-  <button type="button" class="projects__button" onclick="selectAnalysisType('brain')">
-    Brain Tumor Analysis
-  </button>
-  <button type="button" class="projects__button" onclick="selectAnalysisType('skin')">
-    Skin Cancer Analysis
-  </button>
+
+ 
+
 </div>
 
 
@@ -348,10 +363,8 @@
 
               </div>
 
-              <label class="projects__label" id="customChooseFile">
-                Begin Analysis
-              </label>
 
+           
               <input
                 type="file"
                 id="imageUpload"
